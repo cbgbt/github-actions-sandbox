@@ -11,8 +11,18 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-      - run: npm install commitlint-plugin-tense
-      - uses: wagoid/commitlint-github-action@v6
-        configFile: .commitlint.config.mjs
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Install dependencies
+        run: npm install commitlint commitlint-plugin-tense
+      - name: Run commitlint against commits in PR
+        run: |
+          npx commitlint \
+            -g ${{ github.workspace }}/.commitlint.config.mjs \
+            --from ${{ github.event.pull_request.base.sha }} \
+            --to ${{ github.event.pull_request.head.sha }} \
+            --help-url='https://github.com/bottlerocket-os/bottlerocket/blob/develop/CONTRIBUTING.md' \
+            --verbose
