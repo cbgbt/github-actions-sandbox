@@ -6,8 +6,6 @@ Bottlerocket's preferred commit style fits the following template:
 <component>: <description>     <- <subject> line
 
 <body>
-
-<footer>
 ```
 
 Where:
@@ -22,7 +20,6 @@ Where:
   it is present.
     * The <body> may contain as many newline-separated paragraphs as desired.
     * Lines in the <body> are not longer than 72 characters.
-* The <footer> is optional, though it may contain a "Signed-off-by" or similar line.
 
 * Good Examples:
   * shoestore: migrate shoes to new shoe module
@@ -141,8 +138,6 @@ export default {
         'subject-full-stop': [RuleConfigSeverity.Error, 'never'], // No full-stop at end of subject
         'body-max-line-length': [RuleConfigSeverity.Error, 'always', 72],
         'body-leading-blank': [RuleConfigSeverity.Error, 'always'], // Empty line before body
-        'footer-leading-blank': [RuleConfigSeverity.Error, 'always'], // Empty line before footer
-        'footer-max-line-length': [RuleConfigSeverity.Error, 'always', 72],
         'custom-subject-tense': [RuleConfigSeverity.Error, 'always', { // Require present-imperative tense for first verb
             allowedTenses: ['present-imperative'],
             firstOnly: true,
@@ -151,14 +146,12 @@ export default {
     },
     ignores: [
         (message) => message.includes("Merge pull request #"), // PR merges are allowed
-        (message) => /^bump [\w.-]+ to v?[\w.-]+$/.test(message), // "bump" commits are allowed
+        (message) => /^bump [\w.-]+ to v?[\w.-]+$/.test(message.trim()), // "bump" commits are allowed
     ],
     parserPreset: {
         parserOpts: {
             headerPattern: /^((?:([\w._-]+):\s(.+))|.+)$/,
             headerCorrespondence: ['subject', 'component', 'description'],
-            footerPattern: /^((\w+(?:-\w+)*):\s(.+))$/, // Allows footers like Signed-off-by
-            footerCorrespondence: ['footer', 'token', 'value'],
         },
     }
 }
