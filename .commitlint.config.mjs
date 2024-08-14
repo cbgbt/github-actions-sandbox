@@ -128,6 +128,7 @@ const ALLOWED_IMPERATIVE_VERBS = [
     "reconfigure",
     "redo",
     "refer",
+    "refill",
     "render",
     "renumber",
     "repeat",
